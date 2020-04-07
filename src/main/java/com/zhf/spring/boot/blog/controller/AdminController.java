@@ -30,7 +30,7 @@ public class AdminController {
         list.add(new Menu("博客管理", "/blogsManage"));
         model.addAttribute("list", list);
         return new ModelAndView("/admins/index", "model", model);
-        
+
     }
 
 
