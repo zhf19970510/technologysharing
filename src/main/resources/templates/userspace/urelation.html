@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="~{fragments/header2 :: header}">
+</head>
+<body>
+<!-- Page Content -->
+<div class="container blog-content-container">
+
+    <div class="row">
+
+        <!-- 左侧栏目 -->
+        <div class="col-md-4 col-xl-3">
+
+            <div class="row">
+                <div class="col-md-12">
+                    <span>
+                        <img th:src="${user.avatar} == null ? '/images/avatar-defualt.jpg' : ${user.avatar} "
+                         class="blog-avatar-230" th:title="${user.username}">
+                    </span>
+
+                </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-md-12">
+                    <h2 class="card-text" th:text="${user.name}">老卫</h2>
+                    <h4 class="card-text" th:text="${user.username}">waylau</h4>
+                </div>
+            </div>
+
+
+            <div class="row ">
+                <div class="col-md-12">
+                    <h5><i class="fa fa-envelope-o" aria-hidden="true"></i>
+                        <a href="mailto:waylau521@gmail.com" th:href="'mailto:'+ ${user.email}" th:text="${user.email}">waylau521@gmail.com</a></h5>
+                </div>
+            </div>
+
+            <hr>
+
+        </div>
+
+        <!-- 右侧栏目 -->
+        <div class="col-md-8 col-xl-9">
+            <!-- 工具栏 -->
+
+            <ul class="nav nav-tabs mr-auto" th:if="${isBlogOwner}">
+
+                <li class="nav-item">
+                    <a class="nav-link " data-th-classappend="${searchfor} eq 'follows' ? 'active' : ''" href="javascript:void(0)" th:attr="url='/u/'+${user.username}+'/relation?searchfor=follows'">我关注的人(<span th:text="${user.attentionSize}">0</span>)</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" data-th-classappend="${searchfor} eq 'fans' ? 'active' : ''" href="javascript:void(0)" th:attr="url='/u/'+${user.username}+'/relation?searchfor=fans'">我的粉丝(<span th:text="${user.fansSize}"></span>)</a>
+                </li>
+            </ul>
+
+            <ul class="nav nav-tabs mr-auto" th:if="${isBlogOwner} eq false">
+                <li class="nav-item">
+                    <a class="nav-link " data-th-classappend="${searchfor} eq 'follows' ? 'active' : ''" href="javascript:void(0)" th:attr="url='/u/'+${user.username}+'/relation?searchfor=follows'">Ta关注的人(<span th:text="${user.attentionSize}">0</span>)</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" data-th-classappend="${searchfor} eq 'fans' ? 'active' : ''" href="javascript:void(0)" th:attr="url='/u/'+${user.username}+'/relation?searchfor=fans'">Ta的粉丝(<span th:text="${user.fansSize}"></span>)</a>
+                </li>
+            </ul>
+            <div id="mainContainer">
+                <div id="mainContainerRepleace">
+                    <div class="card-block">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <ul th:each="user1: ${page.content}" th:object="${user1}" style="list-style: none;float: left;text-align: center;display: inline-block;width: 128px;height: 95px;margin: 0;overflow: hidden;">
+                                    <li>
+                                    <a href="/u/waylau" th:href="'/u/' + *{username}" title="waylau" th:title="*{username}">
+                                    <div>
+                                        <img src="/images/avatar-defualt.jpg" th:src="*{avatar} == null ? '/images/avatar-defualt.jpg' : *{avatar}" class="blog-avatar-50">
+
+                                    </div>
+                                    <div th:text="*{username}"></div>
+                                    </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:replace="~{fragments/page :: page}">...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="~{fragments/footer :: footer}">...</div>
+<!-- JavaScript -->
+<script th:inline="javascript">
+var username = [[${user.username}]];
+</script>
+<script src="../../js/userspace/urelation.js" th:src="@{/js/userspace/urelation.js}"></script>
+</body>
+</html>

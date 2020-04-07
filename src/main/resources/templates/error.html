@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+>
+<head th:replace="~{fragments/header2 :: header}">
+</head>
+<body>
+    <div style="display: block; line-height: 350px; text-align: center;">
+    操作错误或没有权限！返回<a href="/" th:href="@{/}">主页</a>
+</div>
+<div th:replace="~{fragments/footer :: footer}">...</div>
+</body>
+</html>

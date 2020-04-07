@@ -1,0 +1,51 @@
+
+
+<div class="card-header bg-dark font-white">
+
+	<div class="input-group col-md-7 col-xl-6">
+
+		<input type="text" class="form-control" id="searchName"
+			placeholder="请输入文章标题"> <span class="input-group-btn">
+			<button class="btn btn-secondary" type="button" id="searchNameBtn">
+				<i class="fa fa-search" aria-hidden="true"></i>
+			</button>
+		</span>
+
+	</div>
+</div>
+
+<div id="mainContainer" class="container">
+	<div id="mainContainerRepleace" class="row">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th data-field="blogId">ID</th>
+					<th data-field="title">文章标题</th>
+					<th data-field="operation">操作</th>
+
+				</tr>
+			</thead>
+			<tbody>
+
+				<tr th:each="blog : ${blogModel.blogList}">
+					<td th:text="${blog.blogId}">1</td>
+					<td><a href="/u/waylau/blogs/1" th:href="'/u/' + ${blog.username} + '/blogs/'+ ${blog.blogId}" th:title="${blog.title}" th:text="${blog.title}">1</a></td>
+					<td>
+						<div>
+							<a class="blog-delete-blog" role="button" data-th-attr="url='/blogsManage/' + ${blog.username} + '/blogs/'+ ${blog.blogId}"> <i class="fa fa-times"
+								aria-hidden="true"></i>
+							</a>
+						</div>
+					</td>
+				</tr>
+
+			</tbody>
+
+		</table>
+		<div th:replace="~{fragments/page :: page}">...</div>
+
+	</div>
+</div>
+
+<script src="../../js/blogsManage/main.js" th:src="@{/js/blogsManage/main.js}"></script>
+
