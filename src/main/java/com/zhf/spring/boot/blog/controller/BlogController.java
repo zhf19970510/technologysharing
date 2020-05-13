@@ -104,7 +104,6 @@ public class BlogController {
         return "hotest";
     }
 
-
     @GetMapping("/similarBlogs")
     public ModelAndView getSimilarBlog(Long id,Model model){
         Blog blog = blogService.findBlogById(id);

@@ -117,7 +117,7 @@
                     <h5 class="card-header"><i class="fa fa-connectdevelop" aria-hidden="true"></i> 相关博客</h5>
                     <div class="list-group">
                         <ul class="list-group" th:each="blog : ${similarBlogs}">
-                            <a href="/u/waylau/blogs/1" th:href="'/u/' + ${blog.user.username} + '/blogs/'+ ${blog.id}" class="list-group-item" title="waylau" th:title="${blog.user.username}" th:text="${blog.title}">
+                            <a href="/u/waylau/blogs/1" th:href="'/u/' + ${blog.username} + '/blogs/'+ ${blog.blogId}" class="list-group-item" title="waylau" th:title="${blog.username}" th:text="${blog.title}">
                                 Spring Data + Thymeleaf 3 + Bootstrap 4 实现分页器
                             </a>
                         </ul>

@@ -1,11 +1,9 @@
 package com.zhf.spring.boot.blog.controller;
 
 import com.zhf.spring.boot.blog.domain.*;
+import com.zhf.spring.boot.blog.domain.es.EsBlog;
 import com.zhf.spring.boot.blog.repository.UserRepository;
-import com.zhf.spring.boot.blog.service.BlogService;
-import com.zhf.spring.boot.blog.service.CatalogService;
-import com.zhf.spring.boot.blog.service.RelationshipService;
-import com.zhf.spring.boot.blog.service.UserService;
+import com.zhf.spring.boot.blog.service.*;
 import com.zhf.spring.boot.blog.util.ConstraintViolationExceptionHandler;
 import com.zhf.spring.boot.blog.vo.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -54,6 +53,9 @@ public class UserspaceController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private EsBlogService esBlogService;
 
     @GetMapping("/{username}")
     public String userSpace(@PathVariable("username") String username, Model model) {
@@ -222,14 +224,29 @@ public class UserspaceController {
         /*
          * 获取类似博客列表
          */
-        Catalog catalog = blog.getCatalog();
-        String catalogName = "";
-        if (catalog != null) {
-            catalogName = catalog.getName();
+//        Catalog catalog = blog.getCatalog();
+//        String catalogName = "";
+//        if (catalog != null) {
+//            catalogName = catalog.getName();
+//        }
+//        List<Blog> blogs = blogService.findTop5SimilarBlogs(id, catalogName);
+
+        ///
+        Sort sort = new Sort(Direction.DESC,"readSize","commentSize","voteSize","createTime");
+        Pageable pageable = new PageRequest(0, 10, sort);
+        String s = blog.getTags().split(",")[0];
+        Page<EsBlog> esBlogs = esBlogService.listHotestEsBlogs(s, pageable);
+        List<EsBlog> blogs = esBlogs.getContent();
+        List<EsBlog> blogs1 = new ArrayList<>();
+        if(blogs.size()<=5){
+            blogs1 = blogs;
+        }else {
+            blogs1 = blogs.subList(0,5);
         }
-        List<Blog> blogs = blogService.findTop5SimilarBlogs(id, catalogName);
+        ///
+
         model.addAttribute("user",user);
-        model.addAttribute("similarBlogs", blogs);
+        model.addAttribute("similarBlogs", blogs1);
         model.addAttribute("currentAttention",currentAttention);
         model.addAttribute("isBlogOwner", isBlogOwner);
         model.addAttribute("blogModel", blog);

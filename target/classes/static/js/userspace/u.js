@@ -149,27 +149,30 @@ $(function() {
 		// 获取 CSRF Token
 		var csrfToken = $("meta[name='_csrf']").attr("content");
 		var csrfHeader = $("meta[name='_csrf_header']").attr("content");
+        var cataId = $(this).attr('catalogid');
+        layer.confirm("是否删除该分类？",{btn:['确定','取消'],title:"提示"},function () {
+            $.ajax({
+                url: '/catalogs/'+cataId+'?username='+username,
+                type: 'DELETE',
+                beforeSend: function(request) {
+                    request.setRequestHeader(csrfHeader, csrfToken); // 添加  CSRF Token
+                },
+                success: function(data){
+                    if (data.success) {
+                        // toastr.info(data.message);
+                        // 成功后，刷新列表
+                        // getCatalogs(username);
+                        window.location = '/u/'+username+'/blogs';
+                    } else {
+                        toastr.error(data.message);
+                    }
+                },
+                error : function() {
+                    toastr.error("error!");
+                }
+            });
+        });
 
-		$.ajax({
-			url: '/catalogs/'+$(this).attr('catalogid')+'?username='+username,
-			type: 'DELETE',
-			beforeSend: function(request) {
-				request.setRequestHeader(csrfHeader, csrfToken); // 添加  CSRF Token
-			},
-			success: function(data){
-				if (data.success) {
-					// toastr.info(data.message);
-					// 成功后，刷新列表
-					// getCatalogs(username);
-					window.location = '/u/'+username+'/blogs';
-				} else {
-					toastr.error(data.message);
-				}
-			},
-			error : function() {
-				toastr.error("error!");
-			}
-		});
 	});
 
 	// 根据分类查询

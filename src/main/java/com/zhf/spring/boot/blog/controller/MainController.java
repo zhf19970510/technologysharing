@@ -78,6 +78,26 @@ public class MainController {
      */
     @PostMapping("/register")
     public String registerUser(User user, Model model) {
+        if(user.getUsername()==null||"".equals(user.getUsername().trim())) {
+            model.addAttribute("registerError", true);
+            model.addAttribute("errorMsg", "账号不能为空！");
+            return "register";
+        }
+        if(user.getEmail()==null || "".equals(user.getEmail().trim())){
+            model.addAttribute("errorMsg", "邮箱不能为空！");
+            model.addAttribute("registerError", true);
+            return "register";
+        }
+        if(user.getName()==null || "".equals(user.getName().trim())){
+            model.addAttribute("registerError", true);
+            model.addAttribute("errorMsg", "姓名不能为空！");
+            return "register";
+        }
+        if(user.getPassword()==null||"".equals(user.getPassword().trim())){
+            model.addAttribute("registerError", true);
+            model.addAttribute("errorMsg", "密码不能为空！");
+            return "register";
+        }
 
         User user1 = userService.getUserByUsername(user.getUsername());
         if (user1 != null) {

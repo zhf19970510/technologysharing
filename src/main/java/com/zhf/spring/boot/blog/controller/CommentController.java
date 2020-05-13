@@ -115,13 +115,17 @@ public class CommentController {
         return ResponseEntity.ok().body(new Response(true, "处理成功", null));
     }
 
-
+    /**
+     * 回复评论
+     * @param commetId
+     * @return
+     */
     @RequestMapping("/reply/{commentId}")
     public ResponseEntity<Response> replyComment(@PathVariable("commentId") Long commetId){
 
         System.out.println("进入commentId");
         Comment comment = commentService.getCommentById(commetId);
 
-        return ResponseEntity.ok().body(new Response(true, "处理成功", comment.getUser().getUsername()!=null?comment.getUser().getName()+"\n":null));
+        return ResponseEntity.ok().body(new Response(true, "处理成功", comment.getUser().getUsername()!=null?comment.getUser().getName()+"  ":null));
     }
 }
